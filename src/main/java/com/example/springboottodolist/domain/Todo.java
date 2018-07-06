@@ -3,6 +3,7 @@ package com.example.springboottodolist.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "todos")
@@ -80,8 +81,7 @@ public class Todo {
         if (obj == this) return true;
         if (!(obj instanceof Todo)) return false;
         Todo todo = (Todo) obj;
-        return todo.id != null && todo.id.equals(id) &&
-                todo.context != null && todo.context.equals(context);
+        return Objects.equals(todo.id, id) && Objects.equals(todo.context, context);
     }
 
     @Override
