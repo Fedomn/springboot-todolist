@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(HttpStatus.NOT_FOUND)
 public class TodoNotFoundException extends RuntimeException {
-    public TodoNotFoundException(long id) {
+    public TodoNotFoundException(Long id) {
         super("could not found todo " + id);
     }
 }
