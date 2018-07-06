@@ -9,15 +9,15 @@ import javax.persistence.*;
 public class Todo {
 
     @Id
-    @Column(name = "id")
-    private long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column(name = "context")
     private String context;
 
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "todo_user_id")
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "user_id", foreignKey = @ForeignKey(name = "none"))
     private User user;
 
     public Todo() {
@@ -27,16 +27,27 @@ public class Todo {
         this.context = context;
     }
 
-    public Todo(long id, String context) {
+    public Todo(Long id, String context) {
         this.id = id;
         this.context = context;
     }
 
-    public long getId() {
+    public Todo(String context, User user) {
+        this.context = context;
+        this.user = user;
+    }
+
+    public Todo(Long id, String context, User user) {
+        this.id = id;
+        this.context = context;
+        this.user = user;
+    }
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -62,5 +73,22 @@ public class Todo {
                 "id=" + id +
                 ", context='" + context + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) return true;
+        if (!(obj instanceof Todo)) return false;
+        Todo todo = (Todo) obj;
+        return todo.id != null && todo.id.equals(id) &&
+                todo.context != null && todo.context.equals(context);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = 17;
+        result += id != null ? id.hashCode() : 0;
+        result += context != null ? context.hashCode() : 0;
+        return result;
     }
 }

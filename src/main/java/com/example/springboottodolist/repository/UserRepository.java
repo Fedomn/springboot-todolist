@@ -11,5 +11,5 @@ import org.springframework.stereotype.Repository;
 public interface UserRepository extends JpaRepository<User, Long> {
     @Modifying
     @Query("UPDATE #{#entityName} o SET o.name = ?1 WHERE o.id = ?2")
-    void updateUserNameById(String name, long id);
+    void updateUserNameById(String name, Long id);
 }

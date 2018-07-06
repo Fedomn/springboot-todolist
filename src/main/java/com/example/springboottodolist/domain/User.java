@@ -1,22 +1,22 @@
 package com.example.springboottodolist.domain;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "users")
 public class User {
 
     @Id
-    @Column(name = "id")
-    private long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column(name = "name")
     private String name;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<Todo> todos = new ArrayList<>();
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    private List<Todo> todos;
 
     public User() {
     }
@@ -25,16 +25,16 @@ public class User {
         this.name = name;
     }
 
-    public User(long id, String name) {
+    public User(Long id, String name) {
         this.id = id;
         this.name = name;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -60,7 +60,7 @@ public class User {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 '}');
-        if (!todos.isEmpty()) {
+        if (todos != null && !todos.isEmpty()) {
             for (Todo todo : todos) {
                 result.append(String.format(
                         " [%s]", todo
@@ -68,5 +68,21 @@ public class User {
             }
         }
         return result.toString();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) return true;
+        if (!(obj instanceof User)) return false;
+        User user = (User) obj;
+        return Objects.equals(user.id, id) && Objects.equals(user.name, name);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = 1;
+        result += id != null ? id.hashCode() : 0;
+        result += name != null ? name.hashCode() : 0;
+        return result;
     }
 }
