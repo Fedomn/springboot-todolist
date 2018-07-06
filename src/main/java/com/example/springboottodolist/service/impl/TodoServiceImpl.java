@@ -1,6 +1,7 @@
 package com.example.springboottodolist.service.impl;
 
 import com.example.springboottodolist.domain.Todo;
+import com.example.springboottodolist.exception.TodoNotFoundException;
 import com.example.springboottodolist.repository.TodoRepository;
 import com.example.springboottodolist.service.TodoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional
@@ -22,12 +22,12 @@ public class TodoServiceImpl implements TodoService {
     }
 
     @Override
-    public Optional<Todo> findById(long id) {
-        return todoRepository.findById(id);
+    public Todo findById(Long id) {
+        return todoRepository.findById(id).orElseThrow(() -> new TodoNotFoundException(id));
     }
 
     @Override
-    public void deleteById(long id) {
+    public void deleteById(Long id) {
         todoRepository.deleteById(id);
     }
 
@@ -37,8 +37,8 @@ public class TodoServiceImpl implements TodoService {
     }
 
     @Override
-    public void deleteAll() {
-        todoRepository.deleteAll();
+    public void deleteAllInBatch() {
+        todoRepository.deleteAllInBatch();
     }
 
     @Override

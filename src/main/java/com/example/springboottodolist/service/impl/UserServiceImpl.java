@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional
@@ -22,8 +21,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<User> findById(long id) {
-        return userRepository.findById(id);
+    public User findById(Long id) {
+        return userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
     }
 
     @Override
@@ -37,24 +36,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void deleteById(long id) {
+    public void deleteById(Long id) {
         userRepository.deleteById(id);
     }
 
     @Override
-    public void deleteAll() {
-        userRepository.deleteAll();
+    public void deleteAllInBatch() {
+        userRepository.deleteAllInBatch();
     }
 
-    @Override
-    public Optional<User> updateUserNameById(String name, long id) {
-        userRepository.updateUserNameById(name, id);
-        return userRepository.findById(id);
-    }
-
-    @Override
-    public void validateUser(long userId) {
-        userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException(userId));
-    }
 }

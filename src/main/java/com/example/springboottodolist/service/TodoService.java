@@ -1,18 +1,18 @@
 package com.example.springboottodolist.service;
 
 import com.example.springboottodolist.domain.Todo;
+import com.example.springboottodolist.exception.TodoNotFoundException;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface TodoService {
-    Optional<Todo> findById(long id);
+    Todo findById(Long id);
 
-    void deleteById(long id);
+    void deleteById(Long id);
 
     Todo save(Todo todo);
 
-    void deleteAll();
+    void deleteAllInBatch();
 
     void delete(Todo todo);
 
