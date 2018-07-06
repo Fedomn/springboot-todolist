@@ -1,5 +1,7 @@
 package com.example.springboottodolist.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
@@ -15,6 +17,7 @@ public class User {
     @Column(name = "name")
     private String name;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<Todo> todos;
 
@@ -56,18 +59,10 @@ public class User {
 
     @Override
     public String toString() {
-        StringBuilder result = new StringBuilder("User{" +
+        return "User{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                '}');
-        if (todos != null && !todos.isEmpty()) {
-            for (Todo todo : todos) {
-                result.append(String.format(
-                        " [%s]", todo
-                ));
-            }
-        }
-        return result.toString();
+                '}';
     }
 
     @Override
