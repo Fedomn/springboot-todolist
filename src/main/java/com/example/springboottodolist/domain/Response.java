@@ -4,31 +4,31 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class Response<T> {
-    private T Data;
+  private T Data;
 
-    private String[] Errors;
+  private String[] Errors;
 
-    public Response(T data) {
-        Data = data;
-    }
+  public Response(T data) {
+    Data = data;
+  }
 
-    public Response(String[] errors) {
-        Errors = errors;
-    }
+  public Response(String[] errors) {
+    Errors = errors;
+  }
 
-    public T getData() {
-        return Data;
-    }
+  public T getData() {
+    return Data;
+  }
 
-    public void setData(T data) {
-        Data = data;
-    }
+  public void setData(T data) {
+    Data = data;
+  }
 
-    public String[] getErrors() {
-        return Errors;
-    }
+  public String[] getErrors() {
+    return Errors;
+  }
 
-    public void setErrors(String[] errors) {
-        Errors = errors;
-    }
+  public void setErrors(String[] errors) {
+    Errors = errors;
+  }
 }
