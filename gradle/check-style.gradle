@@ -1,0 +1,7 @@
+apply plugin: 'checkstyle'
+
+checkstyle {
+    toolVersion = "8.11"
+    def configDir = 'config'
+    configFile = new File("$configDir/google_checks.xml")
+}
