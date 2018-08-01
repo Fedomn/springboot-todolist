@@ -1,7 +1,15 @@
 apply plugin: 'checkstyle'
 
 checkstyle {
-    toolVersion = "8.11"
-    def configDir = 'config'
-    configFile = new File("$configDir/google_checks.xml")
+  toolVersion = "8.11"
+
+  configFile = new File("config/checkstyle_google.xml")
+
+  configProperties = [
+      'checkstyle.suppressions.file': "config/checkstyle_suppressions.xml"
+  ]
+
+  ignoreFailures = false
+
+  //maxWarnings = 0
 }
