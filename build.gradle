@@ -1,12 +1,15 @@
 buildscript {
   ext {
-    springBootVersion = '2.0.3.RELEASE'
+    springBootVersion = '2.1.6.RELEASE'
   }
   repositories {
-    mavenCentral()
+    maven {
+      url "https://plugins.gradle.org/m2/"
+    }
   }
   dependencies {
     classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    classpath 'nu.studer:gradle-jooq-plugin:3.0.3'
   }
 }
 
@@ -15,6 +18,7 @@ apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 apply from: file('gradle/check-style.gradle')
+apply plugin: 'nu.studer.jooq'
 
 group = 'com.example'
 version = '0.0.1-SNAPSHOT'
@@ -30,12 +34,52 @@ dependencies {
   compile('org.springframework.boot:spring-boot-starter-web')
   runtime('org.springframework.boot:spring-boot-devtools')
   runtime('com.h2database:h2')
-  runtime('mysql:mysql-connector-java')
   compileOnly('org.projectlombok:lombok')
   compileOnly("org.springframework.boot:spring-boot-configuration-processor")
   testCompile('org.springframework.boot:spring-boot-starter-test')
+
+  compile 'org.springframework.boot:spring-boot-starter-jooq'
+  compile 'mysql:mysql-connector-java:8.0.16'
+  jooqRuntime 'mysql:mysql-connector-java:8.0.16'
 }
 
-task wrapper(type: Wrapper) {
-  gradleVersion = '4.8.1'
+
+jooq {
+  todolist(sourceSets.main) {
+    jdbc {
+      driver = 'com.mysql.cj.jdbc.Driver'
+      url = 'jdbc:mysql://localhost:3306/todolist'
+      user = 'root'
+      password = '12345'
+    }
+    generator {
+      name = 'org.jooq.codegen.JavaGenerator'
+      database {
+        name = 'org.jooq.meta.mysql.MySQLDatabase'
+        inputSchema = 'todolist'
+        includes = '.*'
+        excludes = ''
+        includePackages = false
+        includePackageRoutines = false
+        includePackageUDTs = false
+        includePackageConstants = false
+        includeUDTs = false
+        includeIndexes = false
+      }
+      generate {
+        relations = true
+        deprecated = false
+        records = false
+        daos = false
+        immutablePojos = false
+        fluentSetters = true
+        relations = false
+        globalObjectReferences = false
+      }
+      target {
+        packageName = 'com.example.springboottodolist.jooq'
+        directory = 'src/jooq/java'
+      }
+    }
+  }
 }
