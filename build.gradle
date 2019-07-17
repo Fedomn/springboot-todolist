@@ -69,7 +69,7 @@ jooq {
       generate {
         relations = true
         deprecated = false
-        records = false
+        records = true
         daos = false
         immutablePojos = false
         fluentSetters = true
