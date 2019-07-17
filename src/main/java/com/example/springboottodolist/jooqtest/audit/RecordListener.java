@@ -17,6 +17,7 @@ public class RecordListener extends DefaultRecordListener {
   public static final String CREATED_DATE = "created_date";
   public static final String CREATED_BY = "created_by";
   public static final String ID = "1234";
+  private static final String LAST_MODIFIED_DATE = "last_modified_date";
 
   @Override
   public void insertStart(RecordContext ctx) {
@@ -42,6 +43,14 @@ public class RecordListener extends DefaultRecordListener {
       }
 
       ctx.record().set(DSL.field(CREATED_BY), ID);
+    }
+  }
+
+  @Override
+  public void updateStart(RecordContext ctx) {
+    if (nonNull(ctx.recordType().field(LAST_MODIFIED_DATE))) {
+      ctx.record().changed(CREATED_DATE, false);
+      ctx.record().set(DSL.field(LAST_MODIFIED_DATE), LocalDateTime.now());
     }
   }
 }

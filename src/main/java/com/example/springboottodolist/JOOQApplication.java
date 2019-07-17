@@ -69,10 +69,14 @@ public class JOOQApplication implements CommandLineRunner {
   }
 
   private void testRecordListener() {
-    UsersRecord usersRecord = context.newRecord(USERS);
-    usersRecord.setId(12L);
-    usersRecord.setName("12");
-    usersRecord.store();
+    UsersRecord usersRecord = context.fetchOne(USERS);
+    //    UsersRecord usersRecord = context.newRecord(USERS);
+
+    User pojo = User.builder().id(12L).name("nam45").build();
+    if (!usersRecord.into(User.class).equals(pojo)) {
+      usersRecord.from(pojo);
+      usersRecord.store();
+    }
   }
 
   private void clear() {
