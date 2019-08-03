@@ -11,8 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootApplication
+@EnableTransactionManagement
 public class JOOQApplication implements CommandLineRunner {
 
   private final DSLContext context;
@@ -27,10 +30,12 @@ public class JOOQApplication implements CommandLineRunner {
   }
 
   @Override
+  @Transactional
   public void run(String... args) {
     //    testNormalOperation();
     //    testVisitListener();
-    testRecordListener();
+    //    testRecordListener();
+    testBatchStoreCauseExceptionInRecordListener();
   }
 
   private void testNormalOperation() {
@@ -77,6 +82,19 @@ public class JOOQApplication implements CommandLineRunner {
       usersRecord.from(pojo);
       usersRecord.store();
     }
+  }
+
+  // BatchUpdateException: Can not issue SELECT via executeUpdate() or executeLargeUpdate().
+  private void testBatchStoreCauseExceptionInRecordListener() {
+    UsersRecord usersRecord1 = context.newRecord(USERS);
+    usersRecord1.setId(1L);
+    usersRecord1.setName("");
+
+    UsersRecord usersRecord2 = context.newRecord(USERS);
+    usersRecord2.setId(2L);
+    usersRecord2.setName("");
+
+    context.batchStore(usersRecord1, usersRecord2).execute();
   }
 
   private void clear() {

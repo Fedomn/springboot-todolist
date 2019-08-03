@@ -13,7 +13,8 @@ public class AuditConfiguration {
   //  }
 
   @Bean
-  public RecordListenerProvider auditVisitListenerProvider() {
-    return RecordListener::new;
+  public RecordListenerProvider auditVisitListenerProvider(
+      AuditRecordListener auditRecordListener) {
+    return () -> auditRecordListener;
   }
 }
