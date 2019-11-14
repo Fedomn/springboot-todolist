@@ -23,6 +23,8 @@ public class JOOQApplication implements CommandLineRunner {
   @Autowired
   public JOOQApplication(DSLContext context) {
     this.context = context;
+    this.context.settings().setExecuteWithOptimisticLocking(true);
+    this.context.settings().setExecuteWithOptimisticLockingExcludeUnversioned(true);
   }
 
   public static void main(String[] args) {
@@ -35,7 +37,33 @@ public class JOOQApplication implements CommandLineRunner {
     //    testNormalOperation();
     //    testVisitListener();
     //    testRecordListener();
-    testBatchStoreCauseExceptionInRecordListener();
+    //    testBatchStoreCauseExceptionInRecordListener();
+    //    testOptimisticLocking();
+  }
+
+  private void testOptimisticLocking() {
+    f1();
+    f2();
+  }
+
+  private void f1() {
+    UsersRecord u1 = context.selectFrom(USERS).where(USERS.ID.eq(17L)).fetchOne();
+    new Thread(
+            () -> {
+              u1.setName("u1");
+              u1.store();
+            })
+        .start();
+  }
+
+  private void f2() {
+    UsersRecord u2 = context.selectFrom(USERS).where(USERS.ID.eq(17L)).fetchOne();
+    new Thread(
+            () -> {
+              u2.setName("u2");
+              u2.store();
+            })
+        .start();
   }
 
   private void testNormalOperation() {

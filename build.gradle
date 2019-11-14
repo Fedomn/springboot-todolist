@@ -65,6 +65,7 @@ jooq {
         includePackageConstants = false
         includeUDTs = false
         includeIndexes = false
+        recordVersionFields = 'version'
       }
       generate {
         relations = true
@@ -75,6 +76,7 @@ jooq {
         fluentSetters = true
         relations = false
         globalObjectReferences = false
+        javaTimeTypes = true
       }
       target {
         packageName = 'com.example.springboottodolist.jooq'

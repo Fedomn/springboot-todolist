@@ -30,16 +30,18 @@ VALUES (1, 'todo1', 1),
 
 
 ALTER TABLE `users`
-    ADD COLUMN `created_date` datetime DEFAULT NULL,
-    ADD COLUMN `last_modified_date` datetime DEFAULT NULL,
-    ADD COLUMN `created_by` varchar(255) DEFAULT NULL,
-    ADD COLUMN `last_modified_by` varchar(255) DEFAULT NULL;
+    ADD COLUMN `created_date`       datetime     DEFAULT NULL,
+    ADD COLUMN `last_modified_date` datetime     DEFAULT NULL,
+    ADD COLUMN `created_by`         varchar(255) DEFAULT NULL,
+    ADD COLUMN `last_modified_by`   varchar(255) DEFAULT NULL,
+    ADD COLUMN `version`            bigint(20)   DEFAULT 0;
 
 ALTER TABLE `todos`
-    ADD COLUMN `created_date` datetime DEFAULT NULL,
-    ADD COLUMN `last_modified_date` datetime DEFAULT NULL,
-    ADD COLUMN `created_by` varchar(255) DEFAULT NULL,
-    ADD COLUMN `last_modified_by` varchar(255) DEFAULT NULL;
+    ADD COLUMN `created_date`       datetime     DEFAULT NULL,
+    ADD COLUMN `last_modified_date` datetime     DEFAULT NULL,
+    ADD COLUMN `created_by`         varchar(255) DEFAULT NULL,
+    ADD COLUMN `last_modified_by`   varchar(255) DEFAULT NULL,
+    ADD COLUMN `version`            bigint(20)   DEFAULT 0;
 
 
 CREATE TABLE `operator`
